@@ -1,4 +1,4 @@
-name: Release
+name: CD
 
 on:
   push:
@@ -28,17 +28,13 @@ jobs:
             os: ubuntu-latest
           - target: x86_64-apple-darwin
             os: macos-latest
-          - target: x86_64-pc-windows-msvc
-            os: windows-latest
-          - target: i686-pc-windows-msvc
-            os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       
       # Install dependencies for Linux builds
       - name: Install dependencies (Linux)
-        if: runner.os == 'Linux'
+        if: runner.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y pkg-config
@@ -53,7 +49,7 @@ jobs:
 
       # Install dependencies for macOS builds
       - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
+        if: runner.os == 'macos-latest'
         run: |
           brew install openssl@3
           echo "OPENSSL_DIR=$(brew --prefix openssl@3)" >> $GITHUB_ENV
